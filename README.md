@@ -1,3 +1,14 @@
+---
+title: "FlowMind Studio"
+emoji: "⚡"
+colorFrom: "purple"
+colorTo: "blue"
+sdk: "docker"
+sdk_version: "0.0.0"
+app_file: "Dockerfile"
+pinned: false
+---
+
 # FlowMind Studio
 
 AI-Powered Workflow Automation Studio - n8n benzeri görsel workflow editörü ile yapay zeka asistanı entegrasyonu.
