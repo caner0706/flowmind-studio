@@ -8,6 +8,9 @@ COPY package.json package-lock.json* ./
 
 RUN npm install
 
+# public klasörü yoksa bile oluştur (HF build'te kopyalama hatası olmasın)
+RUN mkdir -p public
+
 # Tüm kodu kopyala
 COPY . .
 
