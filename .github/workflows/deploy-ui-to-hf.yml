@@ -1,0 +1,25 @@
+name: Deploy FlowMind Studio UI to Hugging Face Space
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set git identity
+        run: |
+          git config --global user.name "FlowMind UI CI"
+          git config --global user.email "ci@flowmind.local"
+
+      - name: Push to Hugging Face Space
+        run: |
+          git remote add hf-ui https://Caner7:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/flowmind-ai/flowmind-studio-ui
+          git push hf-ui HEAD:main --force
