@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useWorkflowStore } from "@/store/workflowStore";
+import { useAuthStore } from "@/store/authStore";
 import { Workflow } from "@/types/workflow";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
-import { Plus, Play, Edit, Trash2, Sparkles, Clock } from "lucide-react";
+import { Plus, Play, Edit, Trash2, Sparkles, Clock, LogOut, User } from "lucide-react";
 
 export default function HomePage() {
   const router = useRouter();
+  const { user, logout } = useAuthStore();
   const {
     workflows,
     isLoading,
@@ -20,9 +22,37 @@ export default function HomePage() {
     deleteWorkflow,
   } = useWorkflowStore();
 
+  // Auth kontrolü - user yoksa login'e yönlendir
   useEffect(() => {
-    fetchWorkflows();
-  }, [fetchWorkflows]);
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    if (user) {
+      // Token'ın localStorage'a yazıldığından emin olmak için kısa bir delay
+      const timer = setTimeout(() => {
+        fetchWorkflows();
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [fetchWorkflows, user]);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
+  // Auth kontrolü geçene kadar loading göster
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-dark-950 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
   const handleCreateNew = async () => {
     const newWorkflow = await createWorkflow({
@@ -76,10 +106,22 @@ export default function HomePage() {
                 <p className="text-sm text-muted-foreground">AI-Powered Workflow Automation</p>
               </div>
             </div>
-            <Button onClick={handleCreateNew} size="lg" className="gap-2">
-              <Plus className="w-5 h-5" />
-              Yeni Workflow
-            </Button>
+            <div className="flex items-center gap-3">
+              {user && (
+                <div className="flex items-center gap-2 px-3 py-2 bg-dark-800 rounded-lg">
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">{user.email}</span>
+                </div>
+              )}
+              <Button onClick={handleCreateNew} size="lg" className="gap-2">
+                <Plus className="w-5 h-5" />
+                Yeni Workflow
+              </Button>
+              <Button onClick={handleLogout} variant="ghost" size="md" className="gap-2">
+                <LogOut className="w-4 h-4" />
+                Çıkış
+              </Button>
+            </div>
           </div>
         </div>
       </header>
