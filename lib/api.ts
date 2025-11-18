@@ -2,8 +2,8 @@ import { Workflow } from "@/types/workflow";
 
 const API_BASE = "https://flowmind-ai-flowmind-core-api.hf.space/api";
 
-// Debug mode - console'da tüm API çağrılarını göster
-const DEBUG = true;
+// Debug mode - console'da tüm API çağrılarını göster (sadece development'ta)
+const DEBUG = process.env.NODE_ENV !== 'production';
 
 export interface ApiError {
   message: string;

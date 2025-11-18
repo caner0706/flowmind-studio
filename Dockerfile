@@ -28,6 +28,9 @@ COPY --from=builder /app/package.json package-lock.json* ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.* ./
+COPY --from=builder /app/store ./store
+COPY --from=builder /app/lib ./lib
+COPY --from=builder /app/types ./types
 
 RUN npm install --omit=dev
 
