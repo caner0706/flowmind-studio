@@ -38,4 +38,4 @@ EXPOSE 7860
 
 # Next.js prod server'ı HF portunda çalıştır
 # PORT ve HOSTNAME environment variable'larını kullan
-CMD ["sh", "-c", "next start -p ${PORT:-7860} -H ${HOSTNAME:-0.0.0.0}"]
+CMD ["sh", "-c", "npm run start -- -p ${PORT:-7860} -H ${HOSTNAME:-0.0.0.0}"]
