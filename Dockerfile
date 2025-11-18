@@ -23,20 +23,15 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Sadece ihtiyaç duyulan dosyalar
-COPY --from=builder /app/package.json package-lock.json* ./
-COPY --from=builder /app/.next ./.next
+# Next.js standalone output kullan
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.* ./
-COPY --from=builder /app/store ./store
-COPY --from=builder /app/lib ./lib
-COPY --from=builder /app/types ./types
-
-RUN npm install --omit=dev
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 # HF Spaces için port
 ENV PORT=7860
+ENV HOSTNAME="0.0.0.0"
 EXPOSE 7860
 
-# Next.js prod server'ı HF portunda çalıştır
-CMD ["npm", "run", "start", "--", "-p", "7860"]
+# Next.js standalone server'ı çalıştır
+CMD ["node", "server.js"]
