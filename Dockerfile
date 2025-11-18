@@ -29,10 +29,13 @@ COPY --from=builder /app/package-lock.json* ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next-env.d.ts ./
+COPY --from=builder /app/tsconfig.json ./
 COPY --from=builder /app/store ./store
 COPY --from=builder /app/lib ./lib
 COPY --from=builder /app/types ./types
 COPY --from=builder /app/components ./components
+COPY --from=builder /app/app ./app
 
 # Production dependencies yükle
 RUN npm install --omit=dev

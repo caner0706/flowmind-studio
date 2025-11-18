@@ -11,7 +11,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Development için unsafe-eval ekledik
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Production için de gerekli (Next.js)
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
